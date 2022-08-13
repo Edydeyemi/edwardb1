@@ -8,5 +8,13 @@
     - ansible_python_interpreter: /usr/bin/python3
     - ansible_host_key_checking: false
     - ansible_stdout_callback: yaml
+  
+  pre_tasks:
+    - name: "wait for 600 seconds for server to come online"
+    - name: "install python runtime"
+      apt:
+        name: python3
+        update_cache: yes
+        
   roles:
     - deploy
