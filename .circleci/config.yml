@@ -183,29 +183,33 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      - destroy-environment
+      - destroy-environment:
+          id: ${CIRCLE_WORKFLOW_ID:0:7}
 
   configure-infrastructure:
     docker:
-      - image: circleci/node:13.8.0 
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - add ssh_keys:
-          fingerprints:
-            - "80:d6:b7:13:ea:7a:1b:e8:6d:36:ca:52:5a:19:e4:63"
+          fingerprints: [80:d6:b7:13:ea:7a:1b:e8:6d:36:ca:52:5a:19:e4:63]
       - attach_workspace:
           at: /.circleci/ansible
       - run:
           name: Install dependencies
           command: |
             apk add --update ansible
-            exit 1
+            apk add --update gzip
+            pip install awscli
+            # exit 1
       - run:
           name: Configure server
           command: |
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
             # exit 1
+      - destroy-environment:
+          id: ${CIRCLE_WORKFLOW_ID:0:7}
       # Here's where you will add some code to rollback on failure
 
   # run-migrations:
@@ -219,18 +223,21 @@ jobs:
   #     - run:
   #         name: Run migrations
   #         command: |
-  #           # Your code here
+  #          cd backend
+  #          npm install
+  #          npm run migrations  > migrations_dump.txt
+
   #           exit 1
   #     - run:
   #         name: Send migration results to memstash
   #         command: |
   #           # Your code here
   #           exit 1
-  #    # Here's where you will add some code to rollback on failure
+  #     # Here's where you will add some code to rollback on failure
 
   # deploy-frontend:
   #   docker:
-  #     # Docker image here that supports AWS CLI
+  #     - image: amazon/aws-cli
   #   steps:
   #     # Checkout code from git
   #     - run:
