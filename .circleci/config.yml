@@ -185,30 +185,30 @@ jobs:
             - project/.circleci/ansible/inventory.txt
       - destroy-environment
 
-  configure-infrastructure:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - add ssh_keys:
-          fingerprints: ["80:d6:b7:13:ea:7a:1b:e8:6d:36:ca:52:5a:19:e4:63"]
-      - attach_workspace:
-          at: /.circleci/ansible
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update ansible
-            apk add --update gzip
-            pip install awscli
-            # exit 1
-      - run:
-          name: Configure server
-          command: |
-            cd .circleci/ansible
-            ansible-playbook -i inventory.txt configure-server.yml
-            # exit 1
-      - destroy-environment
-      # Here's where you will add some code to rollback on failure
+  # configure-infrastructure:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #     - checkout
+  #     - add ssh_keys:
+  #         fingerprints: ["80:d6:b7:13:ea:7a:1b:e8:6d:36:ca:52:5a:19:e4:63"]
+  #     - attach_workspace:
+  #         at: /.circleci/ansible
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           apk add --update ansible
+  #           apk add --update gzip
+  #           pip install awscli
+  #           # exit 1
+  #     - run:
+  #         name: Configure server
+  #         command: |
+  #           cd .circleci/ansible
+  #           ansible-playbook -i inventory.txt configure-server.yml
+  #           # exit 1
+  #     - destroy-environment
+  #     # Here's where you will add some code to rollback on failure
 
   # configure-infrastructure:
   #   docker:
