@@ -190,8 +190,8 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - add ssh_keys:
-          fingerprints: ["8f:ec:6d:80:9f:18:30:41:e1:04:a9:3b:02:3e:7a:b7"]
+      # - add ssh_keys:
+      #     fingerprints: ["8f:ec:6d:80:9f:18:30:41:e1:04:a9:3b:02:3e:7a:b7"]
       - attach_workspace:
           at: /.circleci/ansible
       - run:
