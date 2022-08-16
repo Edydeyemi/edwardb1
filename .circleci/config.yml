@@ -46,7 +46,7 @@ jobs:
           command: |
             cd frontend
             npm install
-            # npm audit fix
+            npm audit fix
             npm run build
             # exit 1
       - save_cache:
@@ -191,7 +191,7 @@ jobs:
   #   steps:
   #     - checkout
   #     - add ssh_keys:
-  #         fingerprints: ["80:d6:b7:13:ea:7a:1b:e8:6d:36:ca:52:5a:19:e4:63"]
+  #         fingerprints: ["8f:ec:6d:80:9f:18:30:41:e1:04:a9:3b:02:3e:7a:b7"]
   #     - attach_workspace:
   #         at: /.circleci/ansible
   #     - run:
