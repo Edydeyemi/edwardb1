@@ -167,7 +167,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
-              --tags project=udapeople-noob-frontend \
+              --tags project=your-tag \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
               # exit 1
@@ -183,33 +183,53 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      - destroy-environment:
-          # id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment
+
+  configure-infrastructure:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - add ssh_keys:
+          fingerprints: ["80:d6:b7:13:ea:7a:1b:e8:6d:36:ca:52:5a:19:e4:63"]
+      - attach_workspace:
+          at: /.circleci/ansible
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible
+            apk add --update gzip
+            pip install awscli
+            # exit 1
+      - run:
+          name: Configure server
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt configure-server.yml
+            # exit 1
+      - destroy-environment
+      # Here's where you will add some code to rollback on failure
 
   # configure-infrastructure:
   #   docker:
-  #     - image: circleci/node:13.8.0
+  #   - image: pyth/ansible
   #   steps:
   #     - checkout
   #     - add ssh_keys:
-  #         fingerprints: [80:d6:b7:13:ea:7a:1b:e8:6d:36:ca:52:5a:19:e4:63]
+  #         fingerprints:
+  #           - ["80:d6:b7:13:ea:7a:1b:e8:6d:36:ca:52:5a:19:e4:63"]
   #     - attach_workspace:
   #         at: /.circleci/ansible
   #     - run:
   #         name: Install dependencies
   #         command: |
   #           apk add --update ansible
-  #           apk add --update gzip
-  #           pip install awscli
-  #           # exit 1
+  #           exit 1
   #     - run:
   #         name: Configure server
   #         command: |
-  #           cd .circleci/ansible
-  #           ansible-playbook -i inventory.txt configure-server.yml
-  #           # exit 1
-  #     - destroy-environment:
-  #         id: ${CIRCLE_WORKFLOW_ID:0:7}
+  #           # Your code here
+  #           exit 1
   #     # Here's where you will add some code to rollback on failure
 
   # run-migrations:
@@ -223,21 +243,18 @@ jobs:
   #     - run:
   #         name: Run migrations
   #         command: |
-  #          cd backend
-  #          npm install
-  #          npm run migrations  > migrations_dump.txt
-
+  #           # Your code here
   #           exit 1
   #     - run:
   #         name: Send migration results to memstash
   #         command: |
   #           # Your code here
   #           exit 1
-  #     # Here's where you will add some code to rollback on failure
+  #    # Here's where you will add some code to rollback on failure
 
   # deploy-frontend:
   #   docker:
-  #     - image: amazon/aws-cli
+  #     # Docker image here that supports AWS CLI
   #   steps:
   #     # Checkout code from git
   #     - run:
@@ -348,8 +365,8 @@ workflows:
           # filters:
           # branches:
           # only: [test-feature-branch]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
       # - deploy-frontend:
