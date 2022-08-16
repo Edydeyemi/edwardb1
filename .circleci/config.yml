@@ -186,31 +186,31 @@ jobs:
       - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
 
-  configure-infrastructure:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout 
-      - add_ssh_keys:
-          fingerprints: ["80:d6:b7:13:ea:7a:1b:e8:6d:36:ca:52:5a:19:e4:63"]
-      - attach_workspace:
-          at: /.circleci/ansible
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update ansible
-            apk add --update gzip
-            pip install awscli
-            # exit 1
-      - run:
-          name: Configure server
-          command: |
-            cd .circleci/ansible
-            ansible-playbook -i inventory.txt configure-server.yml
-            # exit 1
-      - destroy-environment:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
-      # Here's where you will add some code to rollback on failure
+  # configure-infrastructure:
+  #   docker:
+  #     - image: python:3.7-alpine3.11
+  #   steps:
+  #     - checkout 
+  #     - add_ssh_keys:
+  #         fingerprints: ["80:d6:b7:13:ea:7a:1b:e8:6d:36:ca:52:5a:19:e4:63"]
+  #     - attach_workspace:
+  #         at: /.circleci/ansible
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           apk add --update ansible
+  #           apk add --update gzip
+  #           pip install awscli
+  #           # exit 1
+  #     - run:
+  #         name: Configure server
+  #         command: |
+  #           cd .circleci/ansible
+  #           ansible-playbook -i inventory.txt configure-server.yml
+  #           # exit 1
+  #     - destroy-environment:
+  #         id: ${CIRCLE_WORKFLOW_ID:0:7}
+  #     # Here's where you will add some code to rollback on failure
 
   # run-migrations:
   #   docker:
@@ -348,8 +348,8 @@ workflows:
           # filters:
           # branches:
           # only: [test-feature-branch]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
       # - deploy-frontend:
