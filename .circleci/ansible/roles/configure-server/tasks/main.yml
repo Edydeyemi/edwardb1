@@ -1,0 +1,11 @@
+---
+- name: Install NodeJS
+  shell: |
+    apt update
+    apt install nodejs npm
+
+- name: Install Pm2
+  shell: |
+    npm install pm2 -g && pm2 update
+    pm2 completion install
+ 

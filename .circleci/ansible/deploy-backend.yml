@@ -15,6 +15,10 @@
       apt:
         name: python3
         update_cache: yes
-        
+  
+  destroy-environment:
+    - NODE_ENV: production
+    - VERSION: "0.1"
+    
   roles:
     - deploy
