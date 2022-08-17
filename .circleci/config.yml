@@ -241,8 +241,16 @@ jobs:
       - checkout
       - attach_workspace:
           at: .circleci/ansible
-      - run: yum install -y tar gzip
-      - run: install nodejs npm
+      # - run: yum install -y tar gzip
+      # - run: install nodejs npm
+      - run:
+          name: Install tar and gzip
+          command: |
+            apk add --update tar gzip
+      - run:
+          name: Install nodejs and npm
+          command: |
+            apk add --update nodejs npm
       - run:
           name: Install ansible and awscli
           command: |
