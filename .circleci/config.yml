@@ -167,7 +167,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
-              --tags project=your-tag \
+              --tags project=udapeople-noob-frontend \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
               # exit 1
@@ -239,26 +239,20 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
-      - attach_workspace:
-          at: .circleci/ansible
       # - run: yum install -y tar gzip
       # - run: install nodejs npm
       - run:
-          name: Install tar and gzip
+          name: Install dependencies
           command: |
-            apk add --update tar gzip
-      - run:
-          name: Install nodejs and npm
-          command: |
+            apk add --update ansible
+            apk add --update gzip
+            apk add --update tar
             apk add --update nodejs npm
-      - run:
-          name: Install ansible and awscli
-          command: |
-            apk add --update ansible aws-cli
+            pip install awscli
+            # exit 1
       - run:
           name: Get backend url
           command: |
-            # your code here
             export BACKEND_IP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:project,Values=udapeople-noob-backend" \
@@ -276,7 +270,7 @@ jobs:
             npm install
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
-            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws s3 cp dist s3://udapeople-udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - destroy-environment
       #     # id: ${CIRCLE_WORKFLOW_ID:0:7}
       # - revert-migrations:
