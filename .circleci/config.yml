@@ -238,27 +238,16 @@ jobs:
     docker:
       - image: python:3.7-alpine3.11
     steps:
-      - checkout
-      - attach_workspace:
-          at: .circleci/ansible
+      - checkout 
       # - run: yum install -y tar gzip
       # - run: install nodejs npm
       - run:
-          name: Install tar and gzip
+          name: Install dependencies
           command: |
-            apk add --update tar gzip
-      - run:
-          name: Install nodejs and npm
-          command: |
-            apk add --update nodejs npm
-      - run:
-          name: Install ansible and awscli
-          command: |
-            apk add --update aws-cli ansible
+            apk add --update --no-cache tar gzip nodejs npm aws-cli 
       - run:
           name: Get backend url
-          command: |
-            # your code here
+          command:  | 
             export BACKEND_IP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:project,Values=udapeople-noob-backend" \
