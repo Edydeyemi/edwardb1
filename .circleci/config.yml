@@ -158,7 +158,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
-              --tags project=udapeople-noob-backend\
+              --tags project=udapeople-backend\
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
               # exit 1
@@ -167,7 +167,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
-              --tags project=udapeople-noob-frontend \
+              --tags project=udapeople-frontend \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
               # exit 1
@@ -176,9 +176,10 @@ jobs:
           command: |
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters "Name=tag:project,Values=udapeople-noob-backend" \
+              --filters "Name=tag:project,Values=udapeople-backend" \
               --output text >> .circleci/ansible/inventory.txt
-            # exit 1
+              cat .circleci/ansible/inventory.txt
+            exit 1
       - persist_to_workspace:
           root: ~/
           paths:
@@ -258,7 +259,7 @@ jobs:
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters "Name=tag:project,Values=udapeople-noob-backend" \
+              --filters "Name=tag:project,Values=udapeople-backend" \
               --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
