@@ -14,24 +14,24 @@ version: 2.1
 #             # Your code here
 #             # exit 1
 
-  # revert-migrations:
-  #   description: Revert the last migration if successfully run in the current workflow.
-  #   parameters:
-  #     # Add parameter here
-  #   steps:
-  #     - run:
-  #         name: Revert migrations
-  #         # Add when this will run
-  #         command: |
-  #           # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-  #           SUCCESS = 1
-  #           if(( $SUCCESS==1 ));
-  #           then
-  #           #  cd ~/project/backend
-  #           #  npm install
-  #           #  Add revert code here. You can find this in the Getting Started section.
-  #             exit 1
-  #           fi
+# revert-migrations:
+#   description: Revert the last migration if successfully run in the current workflow.
+#   parameters:
+#     # Add parameter here
+#   steps:
+#     - run:
+#         name: Revert migrations
+#         # Add when this will run
+#         command: |
+#           # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
+#           SUCCESS = 1
+#           if(( $SUCCESS==1 ));
+#           then
+#           #  cd ~/project/backend
+#           #  npm install
+#           #  Add revert code here. You can find this in the Getting Started section.
+#             exit 1
+#           fi
 
 jobs:
   build-frontend:
@@ -178,12 +178,12 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:project,Values=udapeople-backend" \
               --output text >> .circleci/ansible/inventory.txt
-              cat inventory.txt
+              cat .circleci/ansible/inventory.txt
             # exit 1
       - persist_to_workspace:
           root: ~/
           paths:
-            - .circleci/ansible/inventory.txt
+            - project/.circleci/ansible/inventory.txt
       # - destroy-environment
 
   configure-infrastructure:
@@ -233,8 +233,8 @@ jobs:
             then                 
               curl --insecure https://kvdb.io/NZrFCGtxSFcjgKnJBPWGHY/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
-      # - destroy-environment:
           # workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      # - destroy-environment:
       # Here's where you will add some code to rollback on failure
 
   deploy-frontend:
