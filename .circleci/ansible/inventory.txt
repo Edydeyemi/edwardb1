@@ -1,4 +1,1 @@
 [web]
-Reservations[*].Instances[*].PublicIpAddress
-Reservations[*].Instances[*].PublicIpAddress
-Reservations[*].Instances[*].PublicIpAddress
