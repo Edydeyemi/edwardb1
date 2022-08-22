@@ -206,18 +206,18 @@ jobs:
       - run:
           name: Configure server
           command: | 
-            cd project/.circleci/ansible
+            cd project/.circleci/ansible      
+            echo "The current dir is - "          
             pwd
-            ls
-            # echo "The current dir is - "
-            echo " and the contents of the inventory file is - "
-            # cat inventory.txt
+            echo "Its cintens are  - "  
             ls
             
             cd project 
+            echo "project dir is "
+            pwd
+            echo "project contens are "
             ls
             # ansible-playbook -i inventory.txt configure-server.yml
-            pwd
             ls
             # exit 1
       # - destroy-environment
