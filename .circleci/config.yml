@@ -213,7 +213,10 @@ jobs:
             echo " and the contents of the inventory file is - "
             # cat inventory.txt
             ls
-            ansible-playbook -i inventory.txt configure-server.yml
+            
+            cd project 
+            ls
+            # ansible-playbook -i inventory.txt configure-server.yml
             pwd
             ls
             # exit 1
